@@ -27,17 +27,29 @@ class CheckoutSpec extends FeatureSpec with GivenWhenThen with Matchers {
 
     scenario("Scan oranges and output the price")  {
       Given("A checkout")
+      val checkout = new Checkout
+      checkout.items shouldBe empty
 
       When("scanning oranges as priced items")
+      checkout.scan(List.fill(2)("Orange"))
+      checkout.items should not be empty
 
       Then("the total cost can be calculated")
+      checkout.total should be ("[Orange, Orange] => £0.50")
+
     }
 
   scenario("Scan apples and oranges and output the price")  {
     Given("A checkout")
+    val checkout = new Checkout
+    checkout.items shouldBe empty
 
     When("scanning apples and oranges as priced items")
+    checkout.scan(List.concat(List.fill(2)("Apple"), List.fill(2)("Orange")))
+    checkout.items should not be empty
 
     Then("the total cost can be calculated")
+    checkout.total should be ("[Apple, Apple, Orange, Orange] => £1.70")
+
   }
 }

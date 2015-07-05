@@ -9,7 +9,7 @@ class Checkout {
   def total() : String = {
     var s : String = ""
     var _total = 0.0d
-    for (i <- _items) {
+    for (i <- items) {
       if (!s.isEmpty)  s = s + ", "
       s = s + i.name
       _total = _total + i.price
@@ -23,6 +23,7 @@ class Checkout {
   def scan(scannedList: List[String]) = {
     for (s<-scannedList) s match {
       case "Apple" => _items = new Item("Apple", 0.60)  :: _items
+      case "Orange" => _items = new Item("Orange", 0.25)  :: _items
     }
   }
 
