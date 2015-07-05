@@ -21,7 +21,7 @@ class CheckoutSpec extends FeatureSpec with GivenWhenThen with Matchers {
       checkout.items should not be empty
 
       Then("the total cost can be calculated")
-      checkout.total should be ("[Apple, Apple] => £1.20")
+      checkout.total should be ("[Apple, Apple] => £0.60")
 
   }
 
@@ -49,7 +49,35 @@ class CheckoutSpec extends FeatureSpec with GivenWhenThen with Matchers {
     checkout.items should not be empty
 
     Then("the total cost can be calculated")
-    checkout.total should be ("[Apple, Apple, Orange, Orange] => £1.70")
+    checkout.total should be ("[Apple, Apple, Orange, Orange] => £1.10")
+
+  }
+
+  scenario("Buy one get one free on odd number of apples")  {
+    Given("A checkout")
+    val checkout = new Checkout
+    checkout.items shouldBe empty
+
+    When("scanning am odd number of apples as priced items")
+    checkout.scan(List.fill(3)("Apple"))
+    checkout.items should not be empty
+
+    Then("the total cost can be calculated")
+    checkout.total should be ("[Apple, Apple, Apple] => £1.20")
+
+  }
+
+  scenario("Three for the price of two on oranges")  {
+    Given("A checkout")
+    val checkout = new Checkout
+    checkout.items shouldBe empty
+
+    When("scanning 3 oranges as priced items")
+    checkout.scan(List.fill(3)("Orange"))
+    checkout.items should not be empty
+
+    Then("the total cost can be calculated")
+    checkout.total should be ("[Orange, Orange, Orange] => £0.50")
 
   }
 }
